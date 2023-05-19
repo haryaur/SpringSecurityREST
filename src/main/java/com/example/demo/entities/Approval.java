@@ -12,10 +12,12 @@ public class Approval {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int approvalId;
 	private String branchManager;
+	private String branchManagerEmail;
     private String branchApprovalTime;
 	private String branchApprovalStatus;
 	private String branchApprovalComment;
 	private String headOfficeManager;
+	private String headOfficeManagerEmail;
     private String headOfficeApprovalTime;
 	private String headOfficeApprovalStatus;
 	private String headOfficeApprovalComment;
@@ -87,6 +89,19 @@ public class Approval {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getBranchManagerEmail() {
+		return branchManagerEmail;
+	}
+	public void setBranchManagerEmail(String branchManagerEmail) {
+		this.branchManagerEmail = branchManagerEmail;
+	}
+	public String getHeadOfficeManagerEmail() {
+		return headOfficeManagerEmail;
+	}
+	public void setHeadOfficeManagerEmail(String headOfficeManagerEmail) {
+		this.headOfficeManagerEmail = headOfficeManagerEmail;
+	}
+	
 	
 	
 	

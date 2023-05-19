@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,17 @@ public class RequestController {
 	
 	@Autowired UsersService usersService;
 	
+	
+	public void sendMessage( String setFrom, String setTo, 
+			String setSubject, String setText) {
+	SimpleMailMessage message = new SimpleMailMessage();
+    message.setFrom("afolayanayooluwa@gmail.com");
+    message.setTo("proc manager");
+    message.setSubject("REQUEST STATUS"); 
+    message.setText("You have a pending request");
+    javaMailSender.send(message);
+	}
+	
 //	@PostMapping("/addRequest")
 //	public String AddRequest(@RequestBody RequestDTO requestDTO, Request request) {
 //		request.getContacts();
@@ -60,7 +72,6 @@ public class RequestController {
 		approvalService.saveApproval(approval);
 		request.setApproval(createDTO.getApproval());
 		requestService.saveRequest(request);
-		
 		return "submitted";
 	}
 	
@@ -85,7 +96,7 @@ public class RequestController {
 		return request;
 	}
 	
-	@PutMapping(value="/request/approve/{requestId}")
+	@PutMapping(value="/request/approveManager/{requestId}")
 	public String branchApprove(@PathVariable("requestId") int requestId,
 		@RequestBody Request request) {
 		requestRepo.findById(requestId);
@@ -93,11 +104,27 @@ public class RequestController {
 		return "details successfully updated";
 	}
 	
-	@PutMapping(value="/request/reject/{requestId}")
+	@PutMapping(value="/request/rejectManager/{requestId}")
 	public String branchReject(@PathVariable("requestId") int requestId,
 		@RequestBody Request request) {
 		requestRepo.findById(requestId);
 		requestService.rejectManager(request);
+		return "details successfully updated";
+	}
+	
+	@PutMapping(value="/request/approveHeadOffice/{requestId}")
+	public String headOfficeApprove(@PathVariable("requestId") int requestId,
+		@RequestBody Request request) {
+		requestRepo.findById(requestId);
+		requestService.approveHeadOffice(request);
+		return "details successfully updated";
+	}
+	
+	@PutMapping(value="/request/rejectHeadOffice/{requestId}")
+	public String headOfficeReject(@PathVariable("requestId") int requestId,
+		@RequestBody Request request) {
+		requestRepo.findById(requestId);
+		requestService.rejectHeadOffice(request);
 		return "details successfully updated";
 	}
 

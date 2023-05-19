@@ -26,7 +26,6 @@ public class Users {
 	private String lastName;
 	private String password;
 	private String staffId;
-	private String department;
 	@Column(columnDefinition = "Time")
     private LocalDateTime userCreated;
 
@@ -111,14 +110,6 @@ public class Users {
 
 	public void addRole(Roles roles) {
 		this.roles.add(roles);
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
 	}
 
 	public StaffPosition getStaffPosition() {
