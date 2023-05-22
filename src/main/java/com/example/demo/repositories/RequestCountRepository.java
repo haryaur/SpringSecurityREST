@@ -27,7 +27,7 @@ public interface RequestCountRepository extends JpaRepository<Request, Integer>{
 			+ "left join users d on a.request_user_id = d.user_id \r\n"
 			+ "left join branch_location e on d.user_branch_id = e.branch_id "
 			+ "WHERE d.user_id = ?1"
-			+ "LIMIT 5", nativeQuery = true)
+			+ "ORDER BY a.request_id DESC LIMIT 0,5", nativeQuery = true)
 	public List<Request> findRecentUser(int userId);
 	
 	@Query(value = "select COUNT(*) \r\n"
@@ -73,8 +73,7 @@ public interface RequestCountRepository extends JpaRepository<Request, Integer>{
 			+ "left join items c on a.request_item_id = c.type_id \r\n"
 			+ "left join users d on a.request_user_id = d.user_id \r\n"
 			+ "left join branch_location e on d.user_branch_id = e.branch_id "
-			+ "and b.branch_manager = ?1"
-			+ "LIMIT 5", nativeQuery = true)
+			+ "and b.branch_manager = ?1", nativeQuery = true)
 	public List<Request> findRecentManager(String firstName);
 	
 	@Query(value = "select COUNT(*) \r\n"
@@ -122,8 +121,7 @@ public interface RequestCountRepository extends JpaRepository<Request, Integer>{
 			+ "left join items c on a.request_item_id = c.type_id \r\n"
 			+ "left join users d on a.request_user_id = d.user_id \r\n"
 			+ "left join branch_location e on d.user_branch_id = e.branch_id "
-			+ "WHERE b.head_office_manager = ?1"
-			+ "LIMIT 5", nativeQuery = true)
+			+ "WHERE b.head_office_manager = ?1", nativeQuery = true)
 	public List<Request> findRecentHeadOffice(String firstName);
 	
 	@Query(value = "select COUNT(*) \r\n"

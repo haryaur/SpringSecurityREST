@@ -87,21 +87,21 @@ public class UserController {
     	 response.setAllApprovedRequest(requestCountService.getRequestCountApprovedUser(user.getUserId()));
          response.setAllPendingRequest(requestCountService.getRequestCountPendingUser(user.getUserId()));
     	 response.setAllRejectedRequest(requestCountService.getRequestCountRejectedUser(user.getUserId()));
-    	 response.setRecentRequests(requestCountService.getRecentUser(user.getUserId()));
+    	 response.setRecentRequests(Arrays.asList(requestCountService.getRecentUser(user.getUserId())));
         }
     	if(position.equals("Manager")) {
     		    response.setAllMyRequest(requestCountService.getRequestCountAllManager(user.getFirstName()));
     	    	response.setAllApprovedRequest(requestCountService.getRequestCountApprovedManager(user.getFirstName()));
     	    	response.setAllPendingRequest(requestCountService.getRequestCountPendingManager(user.getFirstName()));
     	    	response.setAllRejectedRequest(requestCountService.getRequestCountRejectedManager(user.getFirstName()));
-    	    	response.setRecentRequests(requestCountService.getRequestRecentManager(user.getFirstName()));
+    	    	response.setRecentRequests(Arrays.asList(requestCountService.getRequestRecentManager(user.getFirstName())));
     	}
     	  if(position.equals("Procurement Manager")) {
     		  response.setAllMyRequest(requestCountService.getRequestCountAllHeadOffice(user.getFirstName()));
   	    	  response.setAllApprovedRequest(requestCountService.getRequestCountApprovedHeadOffice(user.getFirstName()));
   	    	  response.setAllPendingRequest(requestCountService.getRequestCountPendingHeadOffice(user.getFirstName()));
   	    	  response.setAllRejectedRequest(requestCountService.getRequestCountRejectedHeadOffice(user.getFirstName()));
-  	    	response.setRecentRequests(requestCountService.getRequestRecentHeadOffice(user.getFirstName()));
+  	    	response.setRecentRequests(Arrays.asList(requestCountService.getRequestRecentHeadOffice(user.getFirstName())));
     	  }
     	  else {}
         return response;
