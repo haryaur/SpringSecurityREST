@@ -1,7 +1,5 @@
 package com.example.demo.response;
 
-import java.util.List;
-
 public class LoginResponse {
 	private String successful;
 	private String staffId;
@@ -11,6 +9,7 @@ public class LoginResponse {
 	private  int allApprovedRequest;
 	private  int allPendingRequest;
 	private  int allRejectedRequest;
+	private Object recentRequests;
 
 	public LoginResponse() {
 
@@ -81,12 +80,23 @@ public class LoginResponse {
 	public void setAllRejectedRequest(int allRejectedRequest) {
 		this.allRejectedRequest = allRejectedRequest;
 	}
+	
+	
+
+	public Object getRecentRequests() {
+		return recentRequests;
+	}
+
+	public void setRecentRequests(Object recentRequests) {
+		this.recentRequests = recentRequests;
+	}
 
 	public LoginResponse (String successful, Object login,
 		int allMyRequest,
 		int allPendingRequest,  
 		int allApprovedRequest, 
 		int allRejectedRequest,
+		Object recentRequests,
 		String position, String staffId) {
 		this.successful = successful;
 		this.login = login;
@@ -96,6 +106,7 @@ public class LoginResponse {
 		this.allPendingRequest = allPendingRequest;
 		this.allApprovedRequest = allApprovedRequest;
 		this.allRejectedRequest = allRejectedRequest;
+		this.recentRequests = recentRequests;
 	}
 
 	

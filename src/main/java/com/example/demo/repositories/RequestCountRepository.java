@@ -1,6 +1,8 @@
 package com.example.demo.repositories;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -17,6 +19,16 @@ public interface RequestCountRepository extends JpaRepository<Request, Integer>{
 			+ "left join branch_location e on d.user_branch_id = e.branch_id "
 			+ "WHERE d.user_id = ?1", nativeQuery = true)
 	public int findCountAllUser(int userId);
+	
+	@Query(value = "select * \r\n"
+			+ "from request a  \r\n"
+			+ "left join approval b on a.request_approval_id = b.approval_id \r\n"
+			+ "left join items c on a.request_item_id = c.type_id \r\n"
+			+ "left join users d on a.request_user_id = d.user_id \r\n"
+			+ "left join branch_location e on d.user_branch_id = e.branch_id "
+			+ "WHERE d.user_id = ?1"
+			+ "LIMIT 5", nativeQuery = true)
+	public List<Request> findRecentUser(int userId);
 	
 	@Query(value = "select COUNT(*) \r\n"
 			+ "from request a  \r\n"
@@ -54,6 +66,16 @@ public interface RequestCountRepository extends JpaRepository<Request, Integer>{
 			+ "left join branch_location e on d.user_branch_id = e.branch_id "
 			+ "and b.branch_manager = ?1", nativeQuery = true)
 	public int findCountAllManager(String firstName);
+	
+	@Query(value = "select * \r\n"
+			+ "from request a  \r\n"
+			+ "left join approval b on a.request_approval_id = b.approval_id \r\n"
+			+ "left join items c on a.request_item_id = c.type_id \r\n"
+			+ "left join users d on a.request_user_id = d.user_id \r\n"
+			+ "left join branch_location e on d.user_branch_id = e.branch_id "
+			+ "and b.branch_manager = ?1"
+			+ "LIMIT 5", nativeQuery = true)
+	public List<Request> findRecentManager(String firstName);
 	
 	@Query(value = "select COUNT(*) \r\n"
 			+ "from request a  \r\n"
@@ -93,6 +115,16 @@ public interface RequestCountRepository extends JpaRepository<Request, Integer>{
 			+ "left join branch_location e on d.user_branch_id = e.branch_id "
 			+ "WHERE b.head_office_manager = ?1", nativeQuery = true)
 	public int findCountAllHeadOffice(String firstName);
+	
+	@Query(value = "select * \r\n"
+			+ "from request a  \r\n"
+			+ "left join approval b on a.request_approval_id = b.approval_id \r\n"
+			+ "left join items c on a.request_item_id = c.type_id \r\n"
+			+ "left join users d on a.request_user_id = d.user_id \r\n"
+			+ "left join branch_location e on d.user_branch_id = e.branch_id "
+			+ "WHERE b.head_office_manager = ?1"
+			+ "LIMIT 5", nativeQuery = true)
+	public List<Request> findRecentHeadOffice(String firstName);
 	
 	@Query(value = "select COUNT(*) \r\n"
 			+ "from request a  \r\n"

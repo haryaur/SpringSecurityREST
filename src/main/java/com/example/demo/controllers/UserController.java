@@ -83,22 +83,25 @@ public class UserController {
     	response.setStaffId(staffId);
     	response.setPosition(position);
     	if(position.equals("Branch")) {
-    	 response.setAllMyRequest(requestCountService.getRequestAllUser(user.getUserId()));
-    	 response.setAllApprovedRequest(requestCountService.getRequestApprovedUser(user.getUserId()));
-         response.setAllPendingRequest(requestCountService.getRequestPendingUser(user.getUserId()));
-    	 response.setAllRejectedRequest(requestCountService.getRequestRejectedUser(user.getUserId()));
+    	 response.setAllMyRequest(requestCountService.getRequestCountAllUser(user.getUserId()));
+    	 response.setAllApprovedRequest(requestCountService.getRequestCountApprovedUser(user.getUserId()));
+         response.setAllPendingRequest(requestCountService.getRequestCountPendingUser(user.getUserId()));
+    	 response.setAllRejectedRequest(requestCountService.getRequestCountRejectedUser(user.getUserId()));
+    	 response.setRecentRequests(requestCountService.getRecentUser(user.getUserId()));
         }
     	if(position.equals("Manager")) {
-    		    response.setAllMyRequest(requestCountService.getRequestAllManager(user.getFirstName()));
-    	    	response.setAllApprovedRequest(requestCountService.getRequestApprovedManager(user.getFirstName()));
-    	    	response.setAllPendingRequest(requestCountService.getRequestPendingManager(user.getFirstName()));
-    	    	response.setAllRejectedRequest(requestCountService.getRequestRejectedManager(user.getFirstName()));
-    	  }
+    		    response.setAllMyRequest(requestCountService.getRequestCountAllManager(user.getFirstName()));
+    	    	response.setAllApprovedRequest(requestCountService.getRequestCountApprovedManager(user.getFirstName()));
+    	    	response.setAllPendingRequest(requestCountService.getRequestCountPendingManager(user.getFirstName()));
+    	    	response.setAllRejectedRequest(requestCountService.getRequestCountRejectedManager(user.getFirstName()));
+    	    	response.setRecentRequests(requestCountService.getRequestRecentManager(user.getFirstName()));
+    	}
     	  if(position.equals("Procurement Manager")) {
-    		  response.setAllMyRequest(requestCountService.getRequestAllHeadOffice(user.getFirstName()));
-  	    	  response.setAllApprovedRequest(requestCountService.getRequestApprovedHeadOffice(user.getFirstName()));
-  	    	  response.setAllPendingRequest(requestCountService.getRequestPendingHeadOffice(user.getFirstName()));
-  	    	  response.setAllRejectedRequest(requestCountService.getRequestRejectedHeadOffice(user.getFirstName()));
+    		  response.setAllMyRequest(requestCountService.getRequestCountAllHeadOffice(user.getFirstName()));
+  	    	  response.setAllApprovedRequest(requestCountService.getRequestCountApprovedHeadOffice(user.getFirstName()));
+  	    	  response.setAllPendingRequest(requestCountService.getRequestCountPendingHeadOffice(user.getFirstName()));
+  	    	  response.setAllRejectedRequest(requestCountService.getRequestCountRejectedHeadOffice(user.getFirstName()));
+  	    	response.setRecentRequests(requestCountService.getRequestRecentHeadOffice(user.getFirstName()));
     	  }
     	  else {}
         return response;

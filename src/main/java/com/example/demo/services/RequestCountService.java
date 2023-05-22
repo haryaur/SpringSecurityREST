@@ -23,47 +23,60 @@ public class RequestCountService {
 
 		@Autowired RequestCountRepository requestCountRepo;
 		
-		public int getRequestAllUser(int userId) {
+		public int getRequestCountAllUser(int userId) {
 			return requestCountRepo.findCountAllUser(userId);
 		}
 		
-		public int getRequestApprovedUser(int userId) {
+		public List<Request> getRecentUser(int userId) {
+			return requestCountRepo.findRecentUser(userId);
+		}
+		
+		public int getRequestCountApprovedUser(int userId) {
 			return requestCountRepo.findCountApprovedUser(userId);
 		}
 		
-		public int getRequestRejectedUser(int userId) {
+		public int getRequestCountRejectedUser(int userId) {
 			return requestCountRepo.findCountRejectedUser(userId);
 		}
 		
-		public int getRequestPendingUser(int userId) {
+		public int getRequestCountPendingUser(int userId) {
 			return requestCountRepo.findCountPendingUser(userId);
 		}
 		
-		public int getRequestAllManager(String firstName) {
+		public int getRequestCountAllManager(String firstName) {
 			return requestCountRepo.findCountAllManager(firstName);
 		}
 		
-		public int getRequestPendingManager(String firstName) {
+		public List<Request> getRequestRecentManager(String firstName) {
+			return requestCountRepo.findRecentManager(firstName);
+		}
+		
+		public int getRequestCountPendingManager(String firstName) {
 			return requestCountRepo.findCountPendingManager(firstName);
 		}
 		
-		public int getRequestApprovedManager(String firstName) {
+		public int getRequestCountApprovedManager(String firstName) {
 			return requestCountRepo.findCountApprovedManager(firstName);
 		}
-		public int getRequestRejectedManager(String firstName) {
+		public int getRequestCountRejectedManager(String firstName) {
 			return requestCountRepo.findCountRejectedManager(firstName);
 		}
 		
-		public int getRequestAllHeadOffice(String firstName) {
+		public int getRequestCountAllHeadOffice(String firstName) {
 			return requestCountRepo.findCountAllHeadOffice(firstName);
 		}
-		public int getRequestRejectedHeadOffice(String firstName) {
+		
+		public List<Request> getRequestRecentHeadOffice(String firstName) {
+			return requestCountRepo.findRecentHeadOffice(firstName);
+		}
+		
+		public int getRequestCountRejectedHeadOffice(String firstName) {
 			return requestCountRepo.findCountRejectedHeadOffice(firstName);
 		}
-		public int getRequestPendingHeadOffice(String firstName) {
+		public int getRequestCountPendingHeadOffice(String firstName) {
 			return requestCountRepo.findCountPendingHeadOffice(firstName);
 		}
-		public int getRequestApprovedHeadOffice(String firstName) {
+		public int getRequestCountApprovedHeadOffice(String firstName) {
 			return requestCountRepo.findCountApprovedHeadOffice(firstName);
 		}
 
