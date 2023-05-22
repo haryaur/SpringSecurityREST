@@ -3,7 +3,6 @@ package com.example.demo.controllers;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired
 ;
@@ -20,16 +19,20 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.DTO.RegistrationDTO;
-import com.example.demo.entities.BranchManager;
+import com.example.demo.entities.BranchLocation;
 import com.example.demo.entities.Request;
+import com.example.demo.entities.StaffPosition;
 import com.example.demo.entities.Users;
 import com.example.demo.repositories.UsersRepository;
+import com.example.demo.response.GetUserResponse;
 import com.example.demo.response.LoginResponse;
+import com.example.demo.response.RegistrationResponse;
+import com.example.demo.response.ViewUserResponse;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.security.WebSecurityConfig;
-import com.example.demo.services.ManagerService;
-import com.example.demo.services.RequestService;
+import com.example.demo.services.BranchService;
+import com.example.demo.services.RequestCountService;
+import com.example.demo.services.StaffPositionService;
 import com.example.demo.services.UsersService;
 
 @Import(WebSecurityConfig.class)
@@ -38,11 +41,15 @@ public class UserController {
 
 	@Autowired
 	private UsersService usersService;
+	
 	@Autowired
-	private ManagerService managerService;
+	private BranchService branchService;
+	
+	@Autowired
+	private StaffPositionService staffPositionService;
     
 	@Autowired
-	private RequestService requestService;
+	private RequestCountService requestCountService;
 	
 
 	@Autowired
@@ -51,28 +58,7 @@ public class UserController {
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-
-
-
-
-
-  //CONTROLLER TO LOGIN
-//    @PostMapping("/login")
-//    public String showLoginForm(User user) {
-//        //method  to prevent accessing the login page when already logged in
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthen tication();
-//        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-//        	return "Bad login";
-//        }
-//           else {
-//
-//               authentication = authenticationManager.authenticate(
-//                       new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-//               SecurityContextHolder.getContext().setAuthentication(authentication);
-//               return "Good";
-//           }
-//    }
-
+	
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody Users users,
@@ -91,31 +77,42 @@ public class UserController {
         String fullname =user.getFirstName() + " " + user.getLastName();
         String staffId = user.getStaffId();
         String position = user.getStaffPosition().getPositionName();
-        
+        System.out.println(user.getRoles());
     	response.setSuccessful("Login Successful");
     	response.setLogin(fullname);
     	response.setStaffId(staffId);
     	response.setPosition(position);
     	if(position.equals("Branch")) {
-    	 response.setAllMyRequest(Arrays.asList(requestService.getRequestAllUser(user.getUserId())));
-    	 response.setAllApprovedRequest(Arrays.asList(requestService.getRequestApprovedUser(user.getUserId())));
-         response.setAllPendingRequest(Arrays.asList(requestService.getRequestPendingUser(user.getUserId())));
-    	 response.setAllRejectedRequest(Arrays.asList(requestService.getRequestRejectedUser(user.getUserId())));
+    	 response.setAllMyRequest(requestCountService.getRequestAllUser(user.getUserId()));
+    	 response.setAllApprovedRequest(requestCountService.getRequestApprovedUser(user.getUserId()));
+         response.setAllPendingRequest(requestCountService.getRequestPendingUser(user.getUserId()));
+    	 response.setAllRejectedRequest(requestCountService.getRequestRejectedUser(user.getUserId()));
         }
     	if(position.equals("Manager")) {
-    		    response.setAllMyRequest(Arrays.asList(requestService.getRequestAllManager(user.getFirstName())));;
-    	    	response.setAllApprovedRequest(Arrays.asList(requestService.getRequestApprovedManager(user.getFirstName())));
-    	    	response.setAllPendingRequest(Arrays.asList(requestService.getRequestPendingManager(user.getFirstName())));
-    	    	response.setAllRejectedRequest(Arrays.asList(requestService.getRequestRejectedManager(user.getFirstName())));
+    		    response.setAllMyRequest(requestCountService.getRequestAllManager(user.getFirstName()));
+    	    	response.setAllApprovedRequest(requestCountService.getRequestApprovedManager(user.getFirstName()));
+    	    	response.setAllPendingRequest(requestCountService.getRequestPendingManager(user.getFirstName()));
+    	    	response.setAllRejectedRequest(requestCountService.getRequestRejectedManager(user.getFirstName()));
     	  }
     	  if(position.equals("Procurement Manager")) {
-    		  response.setAllMyRequest(Arrays.asList(requestService.getRequestAllHeadOffice(user.getFirstName())));;
-  	    	  response.setAllApprovedRequest(Arrays.asList(requestService.getRequestApprovedHeadOffice(user.getFirstName())));
-  	    	  response.setAllPendingRequest(Arrays.asList(requestService.getRequestPendingHeadOffice(user.getFirstName())));
-  	    	  response.setAllRejectedRequest(Arrays.asList(requestService.getRequestRejectedHeadOffice(user.getFirstName())));
+    		  response.setAllMyRequest(requestCountService.getRequestAllHeadOffice(user.getFirstName()));
+  	    	  response.setAllApprovedRequest(requestCountService.getRequestApprovedHeadOffice(user.getFirstName()));
+  	    	  response.setAllPendingRequest(requestCountService.getRequestPendingHeadOffice(user.getFirstName()));
+  	    	  response.setAllRejectedRequest(requestCountService.getRequestRejectedHeadOffice(user.getFirstName()));
     	  }
     	  else {}
         return response;
+    }
+    
+    
+    @GetMapping("/register")
+    public RegistrationResponse register(RegistrationResponse registrationResponse) {
+    	List<StaffPosition> staff = staffPositionService.listAll();
+    	List<BranchLocation> branch = branchService.listAll();
+    	registrationResponse.setBranch(branch);
+    	registrationResponse.setPosition(staff);
+    	return registrationResponse;
+    	
     }
     
 	//CONTROLLER TO CREATE A NEW USER
@@ -140,34 +137,88 @@ public class UserController {
 	}
 	
 	@GetMapping("/users")
-	public List<Users> listUsers() {
-		List<Users> listUsers = usersService.listAll();
-
-		return listUsers;
-	}
-	
-	@GetMapping("/index")
-	public String Home(Authentication authentication) {
+	public GetUserResponse listUsers(GetUserResponse getUserResponse, Authentication authentication) {
 		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 		String firstName = customUserDetails.getFirstName();
-		String Hi= "Good day" + firstName;
-		return Hi;
+		String staffId= customUserDetails.getStaffId();
+		String position= customUserDetails.getPosition();
+		List<Users> listUsers = usersService.listAll();
+		getUserResponse.setName(firstName);
+		getUserResponse.setPosition(position);
+		getUserResponse.setStaffId(staffId);
+		getUserResponse.setUsers(Arrays.asList(listUsers));
+		return getUserResponse;
 	}
 	
 	@GetMapping("/users/{userId}")
-	public Object viewUser(@PathVariable("userId") int userId) {
+	public ViewUserResponse viewUser(@PathVariable("userId") int userId, 
+		Authentication authentication, ViewUserResponse viewUserResponse) {
+		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+		String firstName = customUserDetails.getFirstName();
+		String staffId= customUserDetails.getStaffId();
+		String position= customUserDetails.getPosition();
 		Users users = usersService.getOne(userId);
-		return users;
+		viewUserResponse.setName(firstName);
+		viewUserResponse.setStaffId(staffId);
+		viewUserResponse.setPosition(position);
+		viewUserResponse.setUsers(users);
+		return viewUserResponse;
 	}
      //METHOD TO UPDATE THE USERDETAILS
 	@PutMapping(value="/user/edit/{userId}")
 	public Object editUser(@PathVariable("userId") int userId,@RequestBody Users users) {
-		Optional<Users> details = usersRepo.findById(userId);
-		Users usersDetails = details.get();
-		usersDetails.setFirstName(users.getFirstName());//this can be used to populate other fields
+		Users details = usersRepo.findById(userId);
+		users.setStaffPosition(details.getStaffPosition());
+		users.setRoles(details.getRoles());
+		users.setBranchLocation(details.getBranchLocation());
+		details.setFirstName(details.getFirstName());//this can be used to populate other fields
 		usersService.save(users);
 		
 		return "details successfully updated";
 	}
 	
 }
+
+//@PostMapping("/login")
+//public LoginResponse login(@RequestBody Users users,
+//		Principal principal,Request request){
+//	LoginResponse response = new LoginResponse();
+//	Authentication authentication =
+//    		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//    				users.getEmail(), users.getPassword()));
+//    if (authentication == null || authentication instanceof AnonymousAuthenticationToken){     	
+//    	String errorMessage = "invalid username or password"; 
+//    	response.setSuccessful(errorMessage);
+//    }
+//    SecurityContextHolder.getContext().setAuthentication(authentication);
+//    String myEmail = authentication.getName();
+//    Users user = usersRepo.findByEmail(myEmail);
+//    String fullname =user.getFirstName() + " " + user.getLastName();
+//    String staffId = user.getStaffId();
+//    String position = user.getStaffPosition().getPositionName();
+//    
+//	response.setSuccessful("Login Successful");
+//	response.setLogin(fullname);
+//	response.setStaffId(staffId);
+//	response.setPosition(position);
+//	if(position.equals("Branch")) {
+//	 response.setAllMyRequest(Arrays.asList(requestService.getRequestAllUser(user.getUserId())));
+//	 response.setAllApprovedRequest(Arrays.asList(requestService.getRequestApprovedUser(user.getUserId())));
+//     response.setAllPendingRequest(Arrays.asList(requestService.getRequestPendingUser(user.getUserId())));
+//	 response.setAllRejectedRequest(Arrays.asList(requestService.getRequestRejectedUser(user.getUserId())));
+//    }
+//	if(position.equals("Manager")) {
+//		    response.setAllMyRequest(Arrays.asList(requestService.getRequestAllManager(user.getFirstName())));;
+//	    	response.setAllApprovedRequest(Arrays.asList(requestService.getRequestApprovedManager(user.getFirstName())));
+//	    	response.setAllPendingRequest(Arrays.asList(requestService.getRequestPendingManager(user.getFirstName())));
+//	    	response.setAllRejectedRequest(Arrays.asList(requestService.getRequestRejectedManager(user.getFirstName())));
+//	  }
+//	  if(position.equals("Procurement Manager")) {
+//		  response.setAllMyRequest(Arrays.asList(requestService.getRequestAllHeadOffice(user.getFirstName())));;
+//	    	  response.setAllApprovedRequest(Arrays.asList(requestService.getRequestApprovedHeadOffice(user.getFirstName())));
+//	    	  response.setAllPendingRequest(Arrays.asList(requestService.getRequestPendingHeadOffice(user.getFirstName())));
+//	    	  response.setAllRejectedRequest(Arrays.asList(requestService.getRequestRejectedHeadOffice(user.getFirstName())));
+//	  }
+//	  else {}
+//    return response;
+//}

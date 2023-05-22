@@ -43,7 +43,6 @@ public class Request {
 	private Tracking tracking;
 
 
-
 	public int getRequestId() {
 		return requestId;
 	}
@@ -109,5 +108,6 @@ public class Request {
 	public void setTracking(Tracking tracking) {
 		this.tracking = tracking;
 	}
+
 
 }

@@ -1,6 +1,8 @@
 package com.example.demo.entities;
 
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,7 +15,7 @@ public class Approval {
 	private int approvalId;
 	private String branchManager;
 	private String branchManagerEmail;
-    private String branchApprovalTime;
+    private LocalDateTime branchApprovalTime;
 	private String branchApprovalStatus;
 	private String branchApprovalComment;
 	private String headOfficeManager;
@@ -35,10 +37,10 @@ public class Approval {
 	public void setBranchManager(String branchManager) {
 		this.branchManager = branchManager;
 	}
-	public String getBranchApprovalTime() {
+	public LocalDateTime getBranchApprovalTime() {
 		return branchApprovalTime;
 	}
-	public void setBranchApprovalTime(String branchApprovalTime) {
+	public void setBranchApprovalTime(LocalDateTime branchApprvalTime) {
 		this.branchApprovalTime = branchApprovalTime;
 	}
 	public String getBranchApprovalStatus() {

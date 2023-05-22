@@ -10,6 +10,6 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 	public Users findByEmail(String email);
 	
 	@Query("SELECT u FROM Users u WHERE u.userId = ?1")
-	public Users findById(Long userId);
+	public Users findById(int userId);
 	
 }

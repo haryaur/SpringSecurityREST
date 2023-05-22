@@ -34,8 +34,8 @@ public class UsersService {
 	private AuthenticationManager authenticationManager;
 
 	public void registerDefaultUser(Users users) {
-		Roles roleUser = rolesRepo.findByName("User");
-		users.addRole(roleUser);
+//		Roles roleUser = rolesRepo.findByName("User");
+//		users.setRoles(roleUser);
 		encodePassword(users);
 		users.setUserCreated(LocalDateTime.now());
 		usersRepo.save(users);
@@ -46,7 +46,7 @@ public class UsersService {
 	}
 
 	public Users getOne(int userId) {
-		return usersRepo.findById(userId).get();
+		return usersRepo.findById(userId);
 	}
 
 	public List<Roles> listRoles() {

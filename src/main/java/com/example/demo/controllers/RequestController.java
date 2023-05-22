@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.DTO.CreateDTO;
+import com.example.demo.DTO.RequestApprovalDTO;
 import com.example.demo.entities.Approval;
 import com.example.demo.entities.Request;
 import com.example.demo.entities.Users;
@@ -71,7 +72,7 @@ public class RequestController {
 		Approval approval = createDTO.getApproval();
 		approvalService.saveApproval(approval);
 		request.setApproval(createDTO.getApproval());
-		requestService.saveRequest(request);
+		requestService.saveRequest(createDTO);
 		return "submitted";
 	}
 	
@@ -99,7 +100,6 @@ public class RequestController {
 	@PutMapping(value="/request/approveManager/{requestId}")
 	public String branchApprove(@PathVariable("requestId") int requestId,
 		@RequestBody Request request) {
-		requestRepo.findById(requestId);
 		requestService.approveManager(request);
 		return "details successfully updated";
 	}
@@ -107,23 +107,20 @@ public class RequestController {
 	@PutMapping(value="/request/rejectManager/{requestId}")
 	public String branchReject(@PathVariable("requestId") int requestId,
 		@RequestBody Request request) {
-		requestRepo.findById(requestId);
 		requestService.rejectManager(request);
 		return "details successfully updated";
 	}
 	
 	@PutMapping(value="/request/approveHeadOffice/{requestId}")
 	public String headOfficeApprove(@PathVariable("requestId") int requestId,
-		@RequestBody Request request) {
-		requestRepo.findById(requestId);
-		requestService.approveHeadOffice(request);
+		@RequestBody RequestApprovalDTO requestApprovalDTO) {
+		requestService.approveHeadOffice(requestApprovalDTO);
 		return "details successfully updated";
 	}
 	
 	@PutMapping(value="/request/rejectHeadOffice/{requestId}")
 	public String headOfficeReject(@PathVariable("requestId") int requestId,
 		@RequestBody Request request) {
-		requestRepo.findById(requestId);
 		requestService.rejectHeadOffice(request);
 		return "details successfully updated";
 	}

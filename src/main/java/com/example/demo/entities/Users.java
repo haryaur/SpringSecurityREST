@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.management.relation.Role;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Users {
+public class Users{
 	@Id
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private int userId;
@@ -36,21 +37,14 @@ public class Users {
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
 	private Set<Roles> roles = new HashSet<>();
-
+	
 	@ManyToOne( cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_position_id")
 	private StaffPosition staffPosition;
 
-
 	@ManyToOne ( cascade = CascadeType.MERGE)
 	@JoinColumn(name = "user_branch_id")
 	private BranchLocation branchLocation;
-
-
-
-
-
-
 
 	public int getUserId() {
 		return userId;
@@ -100,21 +94,39 @@ public class Users {
 		this.staffId = staffId;
 	}
 
-	public Set<Roles> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<Roles> roles) {
-		this.roles = roles;
-	}
-
-	public void addRole(Roles roles) {
-		this.roles.add(roles);
-	}
+//	public Set<Roles> getRoles() {
+//		return roles;
+//	}
+//
+//	public void setRoles(Set<Roles> roles) {
+//		this.roles = roles;
+//	}
+//
+//	public void addRole(Roles roles) {
+//		this.roles.add(roles);
+//	}
+	
+	
 
 	public StaffPosition getStaffPosition() {
 		return staffPosition;
 	}
+
+		public Set<Roles> getRoles() {
+			return roles;
+		}
+
+		public void setRoles(Set<Roles> roles) {
+			this.roles = roles;
+		}
+
+		public void addRole(Roles roles) {
+			this.roles.add(roles);
+		}
+	
+//	public void addRole(Roles roles) {
+//	this.Roles.add(roles);
+//}
 
 	public void setStaffPosition(StaffPosition staffPosition) {
 		this.staffPosition = staffPosition;
@@ -135,6 +147,7 @@ public class Users {
 	public void setUserCreated(LocalDateTime userCreated) {
 		this.userCreated = userCreated;
 	}
+
 
 	
 

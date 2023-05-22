@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +16,10 @@ public class BranchService {
 
 	public void AddNewBranch(BranchLocation branchLocation) {
 	branchRepo.save(branchLocation);
+	}
+	
+	public List<BranchLocation> listAll() {
+		return branchRepo.findAll();
+	
 }
 }

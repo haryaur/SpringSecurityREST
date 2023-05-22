@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.example.demo.entities.Roles;
 import com.example.demo.entities.Users;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails  implements UserDetails{
 	private static final long serialVersionUID = 1L;
 	private Users users;
 
@@ -22,11 +22,11 @@ public class CustomUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Roles> roles = users.getRoles();
+        Set<Roles> role = users.getRoles();
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-        for (Roles role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        for (Roles roles : role) {
+            authorities.add(new SimpleGrantedAuthority(roles.getRoleName()));
         }
 
         return authorities;
@@ -37,10 +37,19 @@ public class CustomUserDetails implements UserDetails {
 		return users.getPassword();
 	}
 
-	@Override
+	
 	public String getUsername() {
 		return users.getEmail();
 	}
+	
+	public String getStaffId() {
+		return users.getStaffId();
+	}
+	
+	public String getPosition() {
+		return users.getStaffPosition().getPositionName();
+	}
+
 
 	public void setRoles(Set<Roles> roles) {
 		this.users.setRoles(roles);
@@ -90,6 +99,10 @@ public class CustomUserDetails implements UserDetails {
 		return users.getLastName();
 	}
 
+	public int getUserId() {
+		return users.getUserId();
+	}
+
 	public String getFullName() {
 		return users.getFirstName() + " " + users.getLastName();
 	}
@@ -97,4 +110,5 @@ public class CustomUserDetails implements UserDetails {
 		return users.getEmail();
 	}
 }
+
 

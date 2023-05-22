@@ -1,6 +1,5 @@
 package com.example.demo.services;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +7,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entities.Approval;
+import com.example.demo.DTO.CreateDTO;
+import com.example.demo.DTO.RequestApprovalDTO;
 import com.example.demo.entities.Request;
-import com.example.demo.entities.Users;
 import com.example.demo.repositories.ApprovalRepository;
 import com.example.demo.repositories.RequestRepository;
+import com.example.demo.repositories.TrackingRepository;
 
 @Service
 public class RequestService {
@@ -21,6 +21,8 @@ public class RequestService {
     JavaMailSender javaMailSender;
 
 	@Autowired ApprovalRepository approvalRepo;
+	
+	@Autowired TrackingRepository trackingRepo;
 
 		@Autowired RequestRepository requestRepo;
 		
@@ -43,12 +45,11 @@ public class RequestService {
 //		}
 
 
-		public void saveRequest(Request request) {
-			request.setTimeCreated(LocalDateTime.now());
-			requestRepo.save(request);
+		public void saveRequest(CreateDTO createDTO) {
+			//createDTO.request(setTimeCreated(LocalDateTime.now()));
+			requestRepo.save(createDTO.getRequest());
 	        String from = "afolayanayooluwa@gmail.com";
-	        String to = "afolayanayooluwa@yahoo.com";
-	        String branch = "Agege";
+	        String to = createDTO.getApproval().getBranchManagerEmail();
 	        String subject ="PENDING REQUEST";
 	        String Text = "Please login to the Hackathon project";
 	        sendMessage(from,to,subject,Text);
@@ -58,36 +59,58 @@ public class RequestService {
 		public void save(Request request) {
 			requestRepo.save(request);
 		}
+		
+		public Request getOneRequest(int requestId) {
+			return requestRepo.findById(requestId);
+		}
 
 		public void approveManager(Request request) {
-			 Approval x = request.getApproval();
-			 x.setBranchApprovalStatus("Approved");
+			request.getApproval().setBranchApprovalStatus("Approved");
+			request.getApproval().setHeadOfficeApprovalStatus("Pending");
+			request.getApproval().setHeadOfficeManagerEmail("afolayanayooluwa@yahoo.com");
 			requestRepo.save(request);
-			SimpleMailMessage message = new SimpleMailMessage();
-	        message.setFrom("afolayanayooluwa@gmail.com");
-	        message.setTo("proc manager");
-	        message.setSubject("REQUEST STATUS"); 
-	        message.setText("You have a pending request");
+			 String from = "afolayanayooluwa@gmail.com";
+		        String to = request.getApproval().getHeadOfficeManagerEmail();
+		        String subject ="PENDING REQUEST TO HEAD OFFICE";
+		        String Text = "Please login to the Hackathon project";
+		        sendMessage(from,to,subject,Text);
 		}
 		
 		public void rejectManager(Request request) {
-			 Approval x = request.getApproval();
-			 x.setBranchApprovalStatus("Rejected");
-			 x.setHeadOfficeApprovalStatus(null);
-			 x.setStatus("Rejected");
+			request.getApproval().setBranchApprovalStatus("Rejected");
+			request.getApproval().setStatus("Rejected");
 			requestRepo.save(request);
+			 String from = "afolayanayooluwa@gmail.com";
+//		        String to = request.getUsers().getEmail();
+		        String to = "afolayanayooluwa@yahoo.com";
+		        String subject ="REJECTED REQUEST BY BRANCH MANAGER";
+		        String Text = "Please login to the Hackathon project";
+		        sendMessage(from,to,subject,Text);
 		}
 		
-		public void approveHeadOffice(Request request) {
-			 Approval x = request.getApproval();
-			 x.setStatus("Approved");
-			requestRepo.save(request);
+		public void approveHeadOffice(RequestApprovalDTO requestApprovalDTO) {
+			requestApprovalDTO.getRequest().getApproval().setHeadOfficeApprovalStatus("Approved");
+			requestApprovalDTO.getRequest().getApproval().setStatus("Approved");
+			requestApprovalDTO.getRequest().setTracking(requestApprovalDTO.getTracking());
+			trackingRepo.save(requestApprovalDTO.getTracking());
+			requestRepo.save(requestApprovalDTO.getRequest());
+			String from = "afolayanayooluwa@gmail.com";
+		    String to = "afolayanayooluwa@yahoo.com";
+		    String subject ="APPROVED REQUEST BY HEAD OFFICE";
+		    String Text = "Please login to the Hackathon project";
+		    sendMessage(from,to,subject,Text);
 		}
+		
 		
 		public void rejectHeadOffice(Request request) {
-			 Approval x = request.getApproval();
-			 x.setStatus("Rejected");
+			request.getApproval().setHeadOfficeApprovalStatus("Rejected");
+			request.getApproval().setStatus("Rejected");
 			requestRepo.save(request);
+			String from = "afolayanayooluwa@gmail.com";
+		    String to = "afolayanayooluwa@yahoo.com";
+		    String subject ="REJECTED REQUEST BY HEAD OFFICE";
+		    String Text = "Please login to the Hackathon project";
+		    sendMessage(from,to,subject,Text);
 		}
 
 		public Request getRequestById(int requestId) {

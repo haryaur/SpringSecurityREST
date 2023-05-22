@@ -7,10 +7,10 @@ public class LoginResponse {
 	private String staffId;
 	private String position;
 	private Object login;
-	private  List<Object> allMyRequest;
-	private  List<Object> allApprovedRequest;
-	private  List<Object> allPendingRequest;
-	private  List<Object> allRejectedRequest;
+	private  int allMyRequest;
+	private  int allApprovedRequest;
+	private  int allPendingRequest;
+	private  int allRejectedRequest;
 
 	public LoginResponse() {
 
@@ -32,11 +32,11 @@ public class LoginResponse {
 		this.login = login;
 	}
 
-	public List<Object> getAllMyRequest() {
+	public int getAllMyRequest() {
 		return allMyRequest;
 	}
 
-	public void setAllMyRequest(List<Object> allMyRequest) {
+	public void setAllMyRequest(int allMyRequest) {
 		this.allMyRequest = allMyRequest;
 	}
 	
@@ -58,35 +58,35 @@ public class LoginResponse {
 		this.position = position;
 	}
 
-	public List<Object> getAllApprovedRequest() {
+	public int getAllApprovedRequest() {
 		return allApprovedRequest;
 	}
 
-	public void setAllApprovedRequest(List<Object> allApprovedRequest) {
+	public void setAllApprovedRequest(int allApprovedRequest) {
 		this.allApprovedRequest = allApprovedRequest;
 	}
 
-	public List<Object> getAllPendingRequest() {
+	public int getAllPendingRequest() {
 		return allPendingRequest;
 	}
 
-	public void setAllPendingRequest(List<Object> allPendingRequest) {
+	public void setAllPendingRequest(int allPendingRequest) {
 		this.allPendingRequest = allPendingRequest;
 	}
 
-	public List<Object> getAllRejectedRequest() {
+	public int getAllRejectedRequest() {
 		return allRejectedRequest;
 	}
 
-	public void setAllRejectedRequest(List<Object> allRejectedRequest) {
+	public void setAllRejectedRequest(int allRejectedRequest) {
 		this.allRejectedRequest = allRejectedRequest;
 	}
 
 	public LoginResponse (String successful, Object login,
-		List<Object> allMyRequest,
-		List<Object> allPendingRequest,  
-		List<Object> allApprovedRequest, 
-		List<Object> allRejectedRequest,
+		int allMyRequest,
+		int allPendingRequest,  
+		int allApprovedRequest, 
+		int allRejectedRequest,
 		String position, String staffId) {
 		this.successful = successful;
 		this.login = login;
