@@ -1,8 +1,7 @@
 package com.example.demo.security;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -23,7 +22,7 @@ public class CustomUserDetails  implements UserDetails{
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Roles> role = users.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
         for (Roles roles : role) {
             authorities.add(new SimpleGrantedAuthority(roles.getRoleName()));
@@ -31,6 +30,9 @@ public class CustomUserDetails  implements UserDetails{
 
         return authorities;
 	}
+	
+	
+	
 
 	@Override
 	public String getPassword() {

@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class RequestService {
 		public void saveRequest(CreateDTO createDTO) {
 			//createDTO.request(setTimeCreated(LocalDateTime.now()));
 			requestRepo.save(createDTO.getRequest());
+			createDTO.getRequest().setTimeCreated(LocalDateTime.now());
 	        String from = "afolayanayooluwa@gmail.com";
 	        String to = createDTO.getApproval().getBranchManagerEmail();
 	        String subject ="PENDING REQUEST";
@@ -68,6 +70,7 @@ public class RequestService {
 			request.getApproval().setBranchApprovalStatus("Approved");
 			request.getApproval().setHeadOfficeApprovalStatus("Pending");
 			request.getApproval().setHeadOfficeManagerEmail("afolayanayooluwa@yahoo.com");
+			request.getApproval().setBranchApprovalTime(LocalDateTime.now());
 			requestRepo.save(request);
 			 String from = "afolayanayooluwa@gmail.com";
 		        String to = request.getApproval().getHeadOfficeManagerEmail();
@@ -79,6 +82,7 @@ public class RequestService {
 		public void rejectManager(Request request) {
 			request.getApproval().setBranchApprovalStatus("Rejected");
 			request.getApproval().setStatus("Rejected");
+			request.getApproval().setBranchApprovalTime(LocalDateTime.now());
 			requestRepo.save(request);
 			 String from = "afolayanayooluwa@gmail.com";
 //		        String to = request.getUsers().getEmail();
@@ -91,6 +95,8 @@ public class RequestService {
 		public void approveHeadOffice(RequestApprovalDTO requestApprovalDTO) {
 			requestApprovalDTO.getRequest().getApproval().setHeadOfficeApprovalStatus("Approved");
 			requestApprovalDTO.getRequest().getApproval().setStatus("Approved");
+			requestApprovalDTO.getRequest().getApproval().setHeadOfficeApprovalTime(LocalDateTime.now());
+			requestApprovalDTO.getRequest().getApproval().setApprovalTime(LocalDateTime.now());
 			requestApprovalDTO.getRequest().setTracking(requestApprovalDTO.getTracking());
 			trackingRepo.save(requestApprovalDTO.getTracking());
 			requestRepo.save(requestApprovalDTO.getRequest());
@@ -105,6 +111,7 @@ public class RequestService {
 		public void rejectHeadOffice(Request request) {
 			request.getApproval().setHeadOfficeApprovalStatus("Rejected");
 			request.getApproval().setStatus("Rejected");
+			request.getApproval().setApprovalTime(LocalDateTime.now());
 			requestRepo.save(request);
 			String from = "afolayanayooluwa@gmail.com";
 		    String to = "afolayanayooluwa@yahoo.com";

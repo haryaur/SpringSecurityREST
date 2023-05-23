@@ -4,7 +4,8 @@ public class LoginResponse {
 	private String successful;
 	private String staffId;
 	private String position;
-	private Object login;
+	private String role;
+	private Object name;
 	private  int allMyRequest;
 	private  int allApprovedRequest;
 	private  int allPendingRequest;
@@ -23,12 +24,12 @@ public class LoginResponse {
 		this.successful = successful;
 	}
 
-	public Object getLogin() {
-		return login;
+	public Object getName() {
+		return name;
 	}
 
-	public void setLogin(Object login) {
-		this.login = login;
+	public void setName(Object name) {
+		this.name = name;
 	}
 
 	public int getAllMyRequest() {
@@ -90,8 +91,18 @@ public class LoginResponse {
 	public void setRecentRequests(Object recentRequests) {
 		this.recentRequests = recentRequests;
 	}
+	
+	
 
-	public LoginResponse (String successful, Object login,
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public LoginResponse (String successful,String role, Object name,
 		int allMyRequest,
 		int allPendingRequest,  
 		int allApprovedRequest, 
@@ -99,7 +110,8 @@ public class LoginResponse {
 		Object recentRequests,
 		String position, String staffId) {
 		this.successful = successful;
-		this.login = login;
+		this.name = name;
+		this.role = role;
 		this.staffId = staffId;
 		this.position = position;
 		this.allMyRequest = allMyRequest;

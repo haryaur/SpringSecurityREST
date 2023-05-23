@@ -34,8 +34,8 @@ public class UsersService {
 	private AuthenticationManager authenticationManager;
 
 	public void registerDefaultUser(Users users) {
-//		Roles roleUser = rolesRepo.findByName("User");
-//		users.setRoles(roleUser);
+		Roles roleUser = rolesRepo.findByName("PROC");
+		users.addRole(roleUser);
 		encodePassword(users);
 		users.setUserCreated(LocalDateTime.now());
 		usersRepo.save(users);

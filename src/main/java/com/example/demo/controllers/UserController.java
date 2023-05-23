@@ -2,7 +2,9 @@ package com.example.demo.controllers;
 
 import java.security.Principal;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired
 ;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.BranchLocation;
 import com.example.demo.entities.Request;
+import com.example.demo.entities.Roles;
 import com.example.demo.entities.StaffPosition;
 import com.example.demo.entities.Users;
 import com.example.demo.repositories.UsersRepository;
@@ -62,7 +66,7 @@ public class UserController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody Users users,
-    		Principal principal,Request request){
+    		Principal principal,Request request, CustomUserDetails customUserDetails){
     	LoginResponse response = new LoginResponse();
     	Authentication authentication =
         		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -76,10 +80,13 @@ public class UserController {
         Users user = usersRepo.findByEmail(myEmail);
         String fullname =user.getFirstName() + " " + user.getLastName();
         String staffId = user.getStaffId();
+        Collection<? extends GrantedAuthority> role = authentication.getAuthorities();
+        String roles = role.toString();
+        System.out.println(roles);
+        System.out.println(user.getEmail());
         String position = user.getStaffPosition().getPositionName();
-        System.out.println(user.getRoles());
     	response.setSuccessful("Login Successful");
-    	response.setLogin(fullname);
+    	response.setName(fullname);
     	response.setStaffId(staffId);
     	response.setPosition(position);
     	if(position.equals("Branch")) {
