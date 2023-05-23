@@ -20,10 +20,10 @@ public class Approval {
 	private String branchApprovalComment;
 	private String headOfficeManager;
 	private String headOfficeManagerEmail;
-    private String headOfficeApprovalTime;
+    private LocalDateTime headOfficeApprovalTime;
 	private String headOfficeApprovalStatus;
 	private String headOfficeApprovalComment;
-	private String approvalTime;
+	private LocalDateTime approvalTime;
 	private String status;
 	public int getApprovalId() {
 		return approvalId;
@@ -61,10 +61,10 @@ public class Approval {
 	public void setHeadOfficeManager(String headOfficeManager) {
 		this.headOfficeManager = headOfficeManager;
 	}
-	public String getHeadOfficeApprovalTime() {
+	public LocalDateTime getHeadOfficeApprovalTime() {
 		return headOfficeApprovalTime;
 	}
-	public void setHeadOfficeApprovalTime(String headOfficeApprovalTime) {
+	public void setHeadOfficeApprovalTime(LocalDateTime headOfficeApprovalTime) {
 		this.headOfficeApprovalTime = headOfficeApprovalTime;
 	}
 	public String getHeadOfficeApprovalStatus() {
@@ -79,10 +79,10 @@ public class Approval {
 	public void setHeadOfficeApprovalComment(String headOfficeApprovalComment) {
 		this.headOfficeApprovalComment = headOfficeApprovalComment;
 	}
-	public String getApprovalTime() {
+	public LocalDateTime getApprovalTime() {
 		return approvalTime;
 	}
-	public void setApprovalTime(String approvalTime) {
+	public void setApprovalTime(LocalDateTime approvalTime) {
 		this.approvalTime = approvalTime;
 	}
 	public String getStatus() {

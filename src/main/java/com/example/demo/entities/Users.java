@@ -94,35 +94,23 @@ public class Users{
 		this.staffId = staffId;
 	}
 
-//	public Set<Roles> getRoles() {
-//		return roles;
-//	}
-//
-//	public void setRoles(Set<Roles> roles) {
-//		this.roles = roles;
-//	}
-//
-//	public void addRole(Roles roles) {
-//		this.roles.add(roles);
-//	}
+	public Set<Roles> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
+	}
+
+	public void addRole(Roles roles) {
+		this.roles.add(roles);
+	}
 	
 	
 
 	public StaffPosition getStaffPosition() {
 		return staffPosition;
 	}
-
-		public Set<Roles> getRoles() {
-			return roles;
-		}
-
-		public void setRoles(Set<Roles> roles) {
-			this.roles = roles;
-		}
-
-		public void addRole(Roles roles) {
-			this.roles.add(roles);
-		}
 	
 //	public void addRole(Roles roles) {
 //	this.Roles.add(roles);

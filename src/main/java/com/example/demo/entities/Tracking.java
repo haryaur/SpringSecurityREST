@@ -1,13 +1,12 @@
 package com.example.demo.entities;
 
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 public class Tracking {
@@ -15,9 +14,8 @@ public class Tracking {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int trackingId;
 	private String trackingcomment;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-	private String expectedDate;
+    private LocalDateTime createdDate;
+	private Date expectedDate;
 	private String acknowledgement;
 	private String extraComment;
 
@@ -35,10 +33,10 @@ public class Tracking {
 	public void setTrackingcomment(String trackingcomment) {
 		this.trackingcomment = trackingcomment;
 	}
-	public Date getCreatedDate() {
+	public LocalDateTime getCreatedDate() {
 		return createdDate;
 	}
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -46,10 +44,10 @@ public class Tracking {
 //    public void prePersist() {
 //        createdDate = Date.;
     //}
-	public String getExpectedDate() {
+	public Date getExpectedDate() {
 		return expectedDate;
 	}
-	public void setExpectedDate(String expectedDate) {
+	public void setExpectedDate(Date expectedDate) {
 		this.expectedDate = expectedDate;
 	}
 	public String getAcknowledgement() {
