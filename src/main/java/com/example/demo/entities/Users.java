@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.management.relation.Role;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Users{
@@ -26,10 +23,8 @@ public class Users{
 	private String firstName;
 	private String lastName;
 	private String password;
-	private String staffId;
 	@Column(columnDefinition = "Time")
     private LocalDateTime userCreated;
-
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "users_roles",
@@ -37,14 +32,6 @@ public class Users{
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
 	private Set<Roles> roles = new HashSet<>();
-	
-	@ManyToOne( cascade = CascadeType.MERGE)
-	@JoinColumn(name = "user_position_id")
-	private StaffPosition staffPosition;
-
-	@ManyToOne ( cascade = CascadeType.MERGE)
-	@JoinColumn(name = "user_branch_id")
-	private BranchLocation branchLocation;
 
 	public int getUserId() {
 		return userId;
@@ -85,15 +72,6 @@ public class Users{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getStaffId() {
-		return staffId;
-	}
-
-	public void setStaffId(String staffId) {
-		this.staffId = staffId;
-	}
-
 	public Set<Roles> getRoles() {
 		return roles;
 	}
@@ -104,28 +82,6 @@ public class Users{
 
 	public void addRole(Roles roles) {
 		this.roles.add(roles);
-	}
-	
-	
-
-	public StaffPosition getStaffPosition() {
-		return staffPosition;
-	}
-	
-//	public void addRole(Roles roles) {
-//	this.Roles.add(roles);
-//}
-
-	public void setStaffPosition(StaffPosition staffPosition) {
-		this.staffPosition = staffPosition;
-	}
-
-	public BranchLocation getBranchLocation() {
-		return branchLocation;
-	}
-
-	public void setBranchLocation(BranchLocation branchLocation) {
-		this.branchLocation = branchLocation;
 	}
 
 	public LocalDateTime getUserCreated() {

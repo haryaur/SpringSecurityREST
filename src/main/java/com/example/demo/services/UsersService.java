@@ -34,7 +34,7 @@ public class UsersService {
 	private AuthenticationManager authenticationManager;
 
 	public void registerDefaultUser(Users users) {
-		Roles roleUser = rolesRepo.findByName("PROC");
+		Roles roleUser = rolesRepo.findByName("USER");
 		users.addRole(roleUser);
 		encodePassword(users);
 		users.setUserCreated(LocalDateTime.now());
@@ -62,20 +62,5 @@ public class UsersService {
 	private void encodePassword(Users users) {
 		String encodedPassword = passwordEncoder.encode(users.getPassword());
 		users.setPassword(encodedPassword);
-	}
-	
-	public void login(Users users) {Authentication authentication =
-    		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-    				users.getEmail(), users.getPassword()));
-    if (authentication == null || authentication instanceof AnonymousAuthenticationToken){
-    	
-    	String errorMessage = "invalid username or password";
-    	
-    }
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String myEmail = authentication.getName();
-    Users user = usersRepo.findByEmail(myEmail);
-    String name =user.getFirstName();
-    
 	}
 }

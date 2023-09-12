@@ -43,15 +43,6 @@ public class CustomUserDetails  implements UserDetails{
 	public String getUsername() {
 		return users.getEmail();
 	}
-	
-	public String getStaffId() {
-		return users.getStaffId();
-	}
-	
-	public String getPosition() {
-		return users.getStaffPosition().getPositionName();
-	}
-
 
 	public void setRoles(Set<Roles> roles) {
 		this.users.setRoles(roles);

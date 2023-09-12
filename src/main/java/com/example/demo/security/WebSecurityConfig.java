@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		    .antMatchers("/").hasAnyAuthority("USER", "EDITOR", "ADMIN")
 		    .antMatchers("/save", "/new", "/register", "/process_register").permitAll()
-		    .antMatchers("/index").authenticated()
+		    .antMatchers("/index", "/users/**").authenticated()
 		    .antMatchers("/users/*").hasAnyAuthority("EDITOR", "ADMIN")
 			//.antMatchers("/users","/view","/index","/", "/view/**", "/user_form", "/account").authenticated()
 			/*.anyRequest().authenticated()
@@ -75,13 +75,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.logout().logoutSuccessUrl("/login?logout").permitAll();
 	}
-
-	@Override
-	public void configure(WebSecurity web) throws Exception {
-	    web
-	            .ignoring()
-	            .antMatchers("/resources/**","/agent-images/**", "/static/**", "/css/**", "/js/**", "/images/**", "/icon/**");
-	}
-
-
 }
